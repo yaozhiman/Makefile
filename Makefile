@@ -1,31 +1,30 @@
 
 CC = gcc
-CFLAGS := -Iadd -Isub 
+CURDIR = $(shell pwd)
+CFLAGS := -I$(CURDIR)/add -I$(CURDIR)/sub
 CPPFLAGS :=
-LDFLAGS :=
+LDFLAGS := 
 
-DIRS = $(shell pwd)/objs
-OBJSDIR = add sub
-
-OBJS = main.o 
+SUBDIRS = add sub main
+OBJSDIR = $(CURDIR)/objs
 
 TARGET = demo
 
-export CFLAGS CC DIRS
+export CFLAGS CC OBJSDIR
 
-$(TARGET):$(OBJS) $(DIRS)/*.o
+all:$(TARGET) 
 
-	$(CC) $(LDFLAGS) -o $@ $^
-
-$(DIRS)/*.o:
-	@$(MAKE) -C add
-	@$(MAKE) -C sub
+$(TARGET):
+	$(call make_subdir,all)
+	$(CC) $(LDFLAGS) -o $@ $(OBJSDIR)/*.o
 	
-all:$(TARGET)
+define make_subdir
+ @for subdir in $(SUBDIRS) ; do \
+ ( $(MAKE) -C $$subdir $1 ) \
+ done;
+endef
 
 clean:
-	$(RM) $(TARGET) $(OBJS) $(DIRS)/*.o
-	@$(MAKE) -C add clean
-	@$(MAKE) -C sub clean
-
-.PHONY:clean demo
+	$(RM) $(TARGET) $(OBJSDIR)/*.o
+ 
+.PHONY:clean all
