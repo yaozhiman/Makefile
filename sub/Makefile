@@ -4,10 +4,16 @@ OBJS = sub_int.o sub_float.o
 
 all:$(OBJS)
 
-$(OBJS):
-	$(CC) -c -o $(DIRS)/$@ $^
+$(OBJS):%.o:%.c
+	$(CC) -c $< -o $(DIRS)/$@ $(CFLAGS)	
 	
 clean:
 	$(RM) $(OBJS)
 
 .PHONY:clean
+
+
+
+	
+
+	

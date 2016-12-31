@@ -1,4 +1,5 @@
-float sub_int(float a,float b)
+
+float sub_float(float a,float b)
 {
-	return a-b;
+	return (a-b);
 }
