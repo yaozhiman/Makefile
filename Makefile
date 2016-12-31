@@ -4,24 +4,27 @@ CFLAGS := -Iadd -Isub
 CPPFLAGS :=
 LDFLAGS :=
 
-DIR = $(shell pwd)/objs
+DIRS = $(shell pwd)/objs
 OBJSDIR = add sub
 
 OBJS = main.o 
 
 TARGET = demo
 
-export CFLAGS CC DIR
+export CFLAGS CC DIRS
 
-$(TARGET):$(OBJS) $(DIR)/*.o
-	@$(MAKE) -C add
-	@$(MAKE) -C sub
+$(TARGET):$(OBJS) $(DIRS)/*.o
+
 	$(CC) $(LDFLAGS) -o $@ $^
 
+$(DIRS)/*.o:
+	@$(MAKE) -C add
+	@$(MAKE) -C sub
+	
 all:$(TARGET)
 
 clean:
-	$(RM) $(TARGET) $(OBJS)
+	$(RM) $(TARGET) $(OBJS) $(DIRS)/*.o
 	@$(MAKE) -C add clean
 	@$(MAKE) -C sub clean
 
