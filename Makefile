@@ -25,6 +25,6 @@ define make_subdir
 endef
 
 clean:
-	$(RM) $(TARGET) $(OBJSDIR)/*.o
+	@$(RM) $(TARGET) $(OBJSDIR)/*.o
  
 .PHONY:clean all
